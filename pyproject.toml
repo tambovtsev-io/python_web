@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "python-web"
+version = "0.1.0"
+package-mode = false
+description = "This is repo contains of my efforts and homeworks related to the \"Python Web\" course."
+authors = ["Ilia Tambovtsev <https://t.me/ilchos>"]
+readme = "README.md"
+license = "Creative Commons Attribution 4.0 International License (CC BY 4.0)"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
