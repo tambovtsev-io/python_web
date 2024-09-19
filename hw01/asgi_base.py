@@ -30,11 +30,11 @@ class ASGIServerBase:
             message: dict[str, Any] = await self.receive()
             body += message.get("body", b"")
             more_body = message.get("more_body", False)
+
         try:
             body = json.loads(body.decode("utf-8"))
         except json.JSONDecodeError:
-            await self.send_error(HTTPStatus.BAD_REQUEST, "Invalid JSON payload.")
-            return None
+            return await self.send_error(HTTPStatus.UNPROCESSABLE_ENTITY, "Invalid JSON payload.")
         return body
 
     async def send_json(
@@ -66,4 +66,4 @@ class ASGIServerBase:
 
     async def default_response(self) -> None:
         """Send default 404 response for undefined routes."""
-        await self.send_json({"error": "Not found"}, status=HTTPStatus.NOT_FOUND)
+        await self.send_error(HTTPStatus.NOT_FOUND, "Not found")

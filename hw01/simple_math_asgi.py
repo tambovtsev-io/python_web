@@ -14,7 +14,7 @@ class SimpleMathASGIServer(ASGIServerBase):
         method: str = self.scope["method"]
         if method != "GET":
             await self.send_error(
-                HTTPStatus.METHOD_NOT_ALLOWED, f"Method {method} not allowed."
+                HTTPStatus.NOT_FOUND, f"Method {method} not allowed."
             )
             return
 
@@ -32,10 +32,8 @@ class SimpleMathASGIServer(ASGIServerBase):
         query_params = parse_qs(query_string)
         n_str = query_params.get('n', [None])[0]
 
-        # Use the helper function to validate the query parameter
-        is_valid, n, error_message, status_code = self.validate_positive_integer(n_str)
-        if not is_valid:
-            await self.send_error(status_code, error_message)
+        n = await self.handle_positive_integer(n_str)
+        if n is None: # already sent error
             return
 
         result = math.factorial(n)
@@ -45,10 +43,8 @@ class SimpleMathASGIServer(ASGIServerBase):
         path: str = self.scope["path"]
         n_str = path.split('/')[-1]
 
-        # Use the helper function to validate the path parameter
-        is_valid, n, error_message, status_code = self.validate_positive_integer(n_str)
-        if not is_valid:
-            await self.send_error(status_code, error_message)
+        n = await self.handle_positive_integer(n_str)
+        if not isinstance(n, int):
             return
 
         result = self.fibonacci(n)
@@ -64,8 +60,8 @@ class SimpleMathASGIServer(ASGIServerBase):
             numbers = body if isinstance(body, list) else []
             numbers = [float(num) for num in numbers]
         except ValueError:
-            await self.send_error(HTTPStatus.UNPROCESSABLE_ENTITY, "Body must be an array of floats.")
-            return
+            return await self.send_error(HTTPStatus.UNPROCESSABLE_ENTITY, "Body must be an array of floats.")
+
 
         if len(numbers) == 0:
             await self.send_error(HTTPStatus.BAD_REQUEST, "Array of floats cannot be empty.")
@@ -73,19 +69,21 @@ class SimpleMathASGIServer(ASGIServerBase):
             result = sum(numbers) / len(numbers)
             await self.send_json({"result": result})
 
-    def validate_positive_integer(self, value: str) -> tuple[bool, int, str, HTTPStatus]:
+    async def handle_positive_integer(self, value: str) -> int:
         """
         Helper function to validate if a given value is a non-negative integer.
         """
         msg = "Value must be a positive integer."
-        if value is None or not value.isdigit():
-            return False, None, msg, HTTPStatus.UNPROCESSABLE_ENTITY
+        try:
+            value = int(value)
+        except Exception as e:
+            return await self.send_error(HTTPStatus.UNPROCESSABLE_ENTITY, msg)
+
 
         n = int(value)
         if n < 0:
-            return False, None, msg, HTTPStatus.BAD_REQUEST
-
-        return True, n, "", HTTPStatus.OK
+            return await self.send_error(HTTPStatus.BAD_REQUEST, msg)
+        return n
 
     def fibonacci(self, n: int) -> int:
         # https://en.wikipedia.org/wiki/Fibonacci_sequence#Binet's_formula
