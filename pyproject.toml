@@ -10,6 +10,8 @@ license = "Creative Commons Attribution 4.0 International License (CC BY 4.0)"
 [tool.poetry.dependencies]
 python = "^3.10"
 uvicorn = "^0.30.6"
+pytest = "^8.3.3"
+requests = "^2.32.3"
 
 [build-system]
 requires = ["poetry-core"]
