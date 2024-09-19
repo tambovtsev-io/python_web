@@ -8,6 +8,23 @@ from asgi_base import ASGIServerBase
 
 
 class SimpleMathASGIServer(ASGIServerBase):
+    """
+    An ASGI-based math server providing simple mathematical operations via HTTP endpoints.
+
+    Endpoints:
+    ----------
+    1. GET /factorial?n={number}
+        - Returns the factorial of a non-negative integer `n`.
+        - Errors: 400 (if `n` is negative), 422 (if `n` is missing or invalid).
+
+    2. GET /fibonacci/{n}
+        - Returns the `n`th Fibonacci number.
+        - Errors: 400 (if `n` is negative), 422 (if `n` is invalid).
+
+    3. GET /mean
+        - Accepts a JSON array of floats and returns their mean.
+        - Errors: 400 (if the array is empty), 422 (if the body is not a valid float array).
+    """
     async def handle_request(self) -> None:
         path: str = self.scope["path"]
 

@@ -3,6 +3,14 @@ from http import HTTPStatus
 from typing import Callable, Awaitable, Any
 
 class ASGIServerBase:
+    """
+    A base class for creating ASGI applications.
+
+    Responsibilities:
+    -----------------
+    - Handles ASGI lifecycle by processing incoming HTTP requests.
+    - Provides utility methods for handling JSON request bodies and sending JSON responses.
+    """
     def __init__(self):
         self.scope: dict[str, Any] = None
         self.receive: Callable[[], Awaitable[dict[str, Any]]] = None
