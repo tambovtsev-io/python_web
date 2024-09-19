@@ -5,9 +5,17 @@
 
 ## Как запускать?
 - Для установки зависимостей `poetry install`
-- Для запуска тестов `cd hw<NN>`. Там будет инструкция :)
+- Для запуска тестов `./hw<NN>/run.sh`
 
-## Навигатор
+
+## Домашние задания
 В ветке `/main` будут только домашки. Материалы лекций будут в ветке `/lectures`.
 
-### Домашние задания
+### ДЗ 1 математический сервер
+[Описание ДЗ](https://github.com/katunilya/hse-python-backend/tree/main?tab=readme-ov-file#%D0%BB%D0%B5%D0%BA%D1%86%D0%B8%D1%8F-1---%D0%BE%D1%81%D0%BD%D0%BE%D0%B2%D1%8B-%D1%81%D0%B5%D1%82%D0%B8-%D0%B8-python-backend) - [Папка hw01](https://github.com/tambovtsev-io/python_web/hw01)
+
+#### Запуск
+- быстрый запуск `./run.sh`
+- запуск сервера с математическими операциями: `poetry run python simple_math_asgi.py`
+- запуск тестов `poetry run pytest test_hw01.py`. тесты брал из репозитория курса [ссылка](https://github.com/katunilya/hse-python-backend/blob/main/tests/test_homework_1.py)
+
