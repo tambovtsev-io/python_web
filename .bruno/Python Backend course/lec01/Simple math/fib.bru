@@ -1,0 +1,16 @@
+meta {
+  name: fib
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://127.0.0.1:{{port}}/fibonacci/{{n}}
+  body: none
+  auth: none
+}
+
+vars:pre-request {
+  port: 8000
+  n: 10
+}

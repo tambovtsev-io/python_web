@@ -1,0 +1,25 @@
+meta {
+  name: query_application
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://127.0.0.1:{{port}}/hello
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Ilia"
+  }
+}
+
+body:multipart-form {
+  name: Ilia
+}
+
+vars:pre-request {
+  port: 8000
+}
