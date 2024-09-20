@@ -30,6 +30,10 @@ class ASGIServerBase:
         else:
             await self.default_response(send)
 
+    async def handle_request(self) -> None:
+        """Override this method to define route-specific logic."""
+        raise NotImplementedError("Subclasses must implement this method.")
+
     async def receive_body(self) -> dict[str, Any]:
         """Handles receiving the body from an incoming request."""
         body: bytes = b""
