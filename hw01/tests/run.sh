@@ -9,7 +9,7 @@ export PYTHONPATH="$PROJECT_DIR:$PYTHONPATH"
 
 # Start the ASGI server in the background
 echo "Starting the ASGI server..."
-poetry run python "$PROJECT_DIR/simple_math_asgi.py" &
+poetry run python "$PROJECT_DIR/simple_math_asgi.py" & server_pid=$!
 
 # Wait a bit to ensure the server is running
 sleep 4
@@ -20,7 +20,8 @@ poetry run pytest "$TESTS_DIR/test_hw01.py"
 
 # After the tests finish, kill the server
 echo "Stopping the ASGI server..."
-pkill -9 uvicorn
+kill -9 $server_pid
+pkill -9 python
 
 # Exit the script
 exit 0
