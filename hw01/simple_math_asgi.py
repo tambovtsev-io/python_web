@@ -86,7 +86,7 @@ class SimpleMathASGIServer(ASGIServerBase):
             result = sum(numbers) / len(numbers)
             await self.send_json({"result": result})
 
-    async def handle_positive_integer(self, value: str) -> int:
+    async def handle_positive_integer(self, value: str) -> int | None:
         """
         Helper function to validate if a given value is a non-negative integer.
         """

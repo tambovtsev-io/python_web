@@ -28,13 +28,13 @@ class ASGIServerBase:
         if scope['type'] == 'http':
             await self.handle_request()
         else:
-            await self.default_response(send)
+            await self.default_response()
 
     async def handle_request(self) -> None:
         """Override this method to define route-specific logic."""
         raise NotImplementedError("Subclasses must implement this method.")
 
-    async def receive_body(self) -> dict[str, Any]:
+    async def receive_body(self) -> dict[str, Any] | None:
         """Handles receiving the body from an incoming request."""
         body: bytes = b""
         more_body: bool = True
@@ -44,10 +44,10 @@ class ASGIServerBase:
             more_body = message.get("more_body", False)
 
         try:
-            body = json.loads(body.decode("utf-8"))
+            body_json = json.loads(body.decode("utf-8"))
         except json.JSONDecodeError:
             return await self.send_error(HTTPStatus.UNPROCESSABLE_ENTITY, "Invalid JSON payload.")
-        return body
+        return body_json
 
     async def send_json(
         self,
