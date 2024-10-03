@@ -1,8 +1,6 @@
 name: Run python tests
 
 on:
-  push:
-    branches: ["master"]
   pull_request:
     branches: ["master"]
 
@@ -24,7 +22,5 @@ jobs:
         uses: abatilo/actions-poetry@v2
       - name: Install dependencies with poetry
         run: poetry install
-      - name: Cd to the last homework directory
-        run: cd $(ls -d hw* | tail -n 1)
-      - name: Run tests
-        run: poetry run pytest --runxfail
+      - name: Run tests for the last homework
+        run: poetry run pytest $(ls -d hw* | tail -n 1) --runxfail
