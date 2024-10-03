@@ -27,4 +27,4 @@ jobs:
       - name: Cd to the last homework directory
         run: cd $(ls -d hw* | tail -n 1)
       - name: Run tests
-        run: poetry run pytest -vv --strict --showlocals --runxfail
+        run: poetry run pytest --runxfail
