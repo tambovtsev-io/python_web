@@ -1,16 +1,31 @@
 services:
-  server:
+  server-dev:
+    profiles: ["dev"]
     build:
       context: .
+      target: development
     ports:
       - 8000:8000
+    volumes:
+      - ./:/app
+    command: ["uvicorn", "--reload", "--host", "0.0.0.0", "main:app"]
+
+  server-prod:
+    profiles: ["prod"]
+    build:
+      context: .
+      target: production
+    ports:
+      - 8001:8000
 
   grafana:
+    profiles: ["dev", "prod"]
     image: grafana/grafana:latest
     ports:
       - 3000:3000
 
   prometheus:
+    profiles: ["dev", "prod"]
     image: prom/prometheus
     volumes:
       - ./settings/prometheus/:/etc/prometheus/

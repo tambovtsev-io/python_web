@@ -1,22 +1,52 @@
-### Building and running your application
+# Dockerising this app
 
-When you're ready, start your application by running:
-`docker compose up --build`.
+## Dev vs Prod
+Separation into `development` and `production` stages:
 
-Your application will be available at http://localhost:8000.
+1. Development Stage:
+  - Mounts the app directory, allowing for live code changes without rebuilding the image.
+  - Uses `uvicorn` auto-reload
 
-### Deploying your application to the cloud
+2. Production Stage:
+  - Copies the application code into the image instead of mounting it.
 
-First, build your image, e.g.: `docker build -t myapp .`.
-If your cloud uses a different CPU architecture than your development
-machine (e.g., you are on a Mac M1 and your cloud provider is amd64),
-you'll want to build the image for that platform, e.g.:
-`docker build --platform=linux/amd64 -t myapp .`.
+### Usage
 
-Then, push it to your registry, e.g. `docker push myregistry.com/myapp`.
+#### Building
+1. For Development:
+  - Build the image up to the development stage:
+    ```
+    docker build --target development -t shop_api-server:dev .
+    ```
+  - Run the container, mounting your local code directory:
+    ```
+    docker run -v $(pwd)/app:/app -p 8000:8000 shop_api-server:dev
+    ```
 
-Consult Docker's [getting started](https://docs.docker.com/go/get-started-sharing/)
-docs for more detail on building and pushing.
+2. For Production:
+  - Build the complete image:
+    ```
+    docker build -t shop_api-server:prod .
+    ```
+  - Run the container:
+    ```
+    docker run -p 8000:8000 shop_api-server:prod
+    ```
 
-### References
-* [Docker's Python guide](https://docs.docker.com/language/python/)
+#### Running
+- For development:
+  ```
+  docker-compose --profile dev up
+  ```
+  Access the app at http://localhost:8000
+
+- For production:
+  ```
+  docker-compose --profile prod up
+  ```
+  Access the app at http://localhost:8001
+
+- To run specific container:
+  ```
+  docker-compose up <container>
+  ```
