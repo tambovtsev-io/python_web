@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from lecture_4.demo_service.api import users, utils
+from ..api import users, utils
 
 
 def create_app():

@@ -23,4 +23,4 @@ jobs:
       - name: Install dependencies with poetry
         run: poetry install
       - name: Run tests for the last homework
-        run: poetry run pytest $(ls -d hw* | tail -n 1) --runxfail
+        run: cd $(ls -d hw* | tail -n 1) && poetry run pytest --runxfail

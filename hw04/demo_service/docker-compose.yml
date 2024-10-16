@@ -1,0 +1,19 @@
+services:
+  server-dev:
+    profiles: ["dev"]
+    build:
+      context: .
+      target: development
+    ports:
+      - 8000:8000
+    volumes:
+      - ./:/app
+    command: ["uvicorn", "--reload", "--host", "0.0.0.0", "main:app"]
+
+  server-prod:
+    profiles: ["prod"]
+    build:
+      context: .
+      target: production
+    ports:
+      - 8001:8000
