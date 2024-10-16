@@ -4,16 +4,16 @@ from typing import Annotated
 from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import PlainTextResponse
 
-from lecture_4.demo_service.api.contracts import (
+from ..api.contracts import (
     RegisterUserRequest,
     UserResponse,
 )
-from lecture_4.demo_service.api.utils import (
+from ..api.utils import (
     AdminDep,
     AuthorDep,
     UserServiceDep,
 )
-from lecture_4.demo_service.core.users import UserInfo, UserRole
+from ..core.users import UserInfo, UserRole
 
 router = APIRouter()
 
@@ -40,6 +40,7 @@ async def get_user(
     if id is None and username is None:
         raise ValueError("neither id nor username are provided")
 
+    entity = None
     if id is not None and (author.uid == id or author.info.role == UserRole.ADMIN):
         entity = user_service.get_by_id(id)
     elif author.info.username == username or author.info.role == UserRole.ADMIN:
