@@ -1,11 +1,11 @@
-Test settings are in `pytest.ini` file.
+Test settings are in `pytest.ini` file. It is configured to run
 ```
 pytest -vv --showlocals --cov=demo_service/ --cov-report=term-missing
 ```
 
 tests:
 1. `test/conftest.py`:
-   This file will contain all the fixtures used across multiple test files.
+   Fixtures.
 
 2. `test/test_user_registration.py`:
    Tests related to user registration.
